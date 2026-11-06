@@ -1,0 +1,424 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash App — Do More With Your Money</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cash: {
+              green: '#00D632',
+              greenDark: '#00b82b',
+              greenLight: '#33de5b',
+              black: '#000000',
+              dark: '#0a0a0a',
+              card: '#121214',
+              surface: '#18181b',
+              elevated: '#202024',
+              border: '#27272a',
+              borderLight: '#3f3f46',
+              muted: '#71717a',
+              light: '#f4f4f5'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --cash-green: #00D632;
+      --theme-bg: #000000;
+      --theme-text: #ffffff;
+      --theme-text-muted: #a1a1aa;
+      --theme-card: #121214;
+      --theme-surface: #18181b;
+      --theme-elevated: #202024;
+      --theme-border: #27272a;
+      --theme-nav-bg: rgba(0, 0, 0, 0.95);
+      --theme-nav-border: rgba(39, 39, 42, 0.6);
+    }
+
+    /* Dynamic Scroll-Based Theme Switchers */
+    body {
+      background-color: var(--theme-bg);
+      color: var(--theme-text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+    }
+
+    /* Pure Black Hero - No dark green haze */
+    .hero-pure-black {
+      background-color: #000000 !important;
+      background-image: none !important;
+    }
+
+    /* Image 2 Light Theme (Active on middle scroll) */
+    body.theme-light {
+      --theme-bg: #ffffff;
+      --theme-text: #000000;
+      --theme-text-muted: #52525b;
+      --theme-card: #ffffff;
+      --theme-surface: #f4f4f5;
+      --theme-elevated: #e4e4e7;
+      --theme-border: #e4e4e7;
+      --theme-nav-bg: rgba(255, 255, 255, 0.95);
+      --theme-nav-border: rgba(228, 228, 231, 0.8);
+    }
+
+    body.theme-light .text-white {
+      color: #000000 !important;
+    }
+    body.theme-light .hero-pure-white-text {
+      color: #000000 !important;
+    }
+    body.theme-light .text-zinc-400,
+    body.theme-light .text-zinc-500 {
+      color: #52525b !important;
+    }
+    body.theme-light .text-zinc-300,
+    body.theme-light .text-zinc-200 {
+      color: #27272a !important;
+    }
+    body.theme-light .bg-black {
+      background-color: #ffffff !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    body.theme-light .bg-cash-dark {
+      background-color: #fbfbfc !important;
+    }
+    body.theme-light .bg-cash-surface {
+      background-color: #f4f4f5 !important;
+    }
+    body.theme-light .border-cash-border {
+      border-color: #e4e4e7 !important;
+    }
+    body.theme-light .border-white\/20,
+    body.theme-light .border-white\/10 {
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+    body.theme-light .bg-white\/10 {
+      background-color: rgba(0, 0, 0, 0.06) !important;
+      color: #000000 !important;
+    }
+    body.theme-light header {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: #e4e4e7 !important;
+    }
+    body.theme-light input,
+    body.theme-light select,
+    body.theme-light textarea {
+      background-color: #f4f4f5 !important;
+      color: #000000 !important;
+      border-color: #e4e4e7 !important;
+    }
+    body.theme-light .hero-pure-black {
+      background-color: #ffffff !important;
+    }
+
+    /* Smooth transitions for all theme-adaptive elements */
+    header, section, .card, div, input, button {
+      transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease;
+    }
+
+    .shadow-green-subtle {
+      box-shadow: 0 10px 40px -10px rgba(0, 214, 50, 0.25);
+    }
+
+    /* Modern Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00D632;
+    }
+
+    /* Real Cash Card 3D-effect styling */
+    .cash-card-display {
+      aspect-ratio: 1.586 / 1;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+    }
+    .cash-card-display:hover {
+      transform: translateY(-4px) rotateX(2deg) rotateY(-2deg);
+    }
+
+    /* Custom number input appearance */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="theme-dark bg-black text-white selection:bg-cash-green selection:text-black min-h-screen flex flex-col antialiased">
+
+  <!-- ========================================================================= -->
+  <!-- 0. SCROLL THEME INDICATOR PILL                                            -->
+  <!-- ========================================================================= -->
+  <div id="scrollThemePill" class="fixed top-24 right-4 z-40 px-3.5 py-1.5 rounded-full text-[11px] font-mono font-bold border backdrop-blur-md transition-all duration-300 shadow-lg hidden sm:flex items-center space-x-2 bg-black/90 text-white border-zinc-700">
+    <span class="w-2 h-2 rounded-full bg-cash-green animate-pulse" id="themeStatusDot"></span>
+    <span id="themeStatusText">Theme 1: Black (Top)</span>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 1. GLOBAL NAVIGATION BAR                                                  -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-40 w-full bg-black/90 backdrop-blur-xl border-b border-cash-border/60 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#home" class="flex items-center space-x-3 group">
+        <div class="w-10 h-10 rounded-2xl bg-cash-green flex items-center justify-center text-black font-black text-2xl shadow-lg shadow-cash-green/20 group-hover:scale-105 transition-transform duration-200">
+          $
+        </div>
+        <span class="font-black text-xl tracking-tight text-white flex items-center gap-1.5">
+          Cash App
+        </span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold tracking-wide text-zinc-400">
+        <a href="#payments" class="hover:text-cash-green transition-colors">Transfers</a>
+        <a href="#cash-card" class="hover:text-cash-green transition-colors">Cash Card</a>
+        <a href="#tags-showcase" class="hover:text-cash-green transition-colors">Tags</a>
+        <a href="#banking" class="hover:text-cash-green transition-colors">Banking</a>
+        <a href="#investing" class="hover:text-cash-green transition-colors">Stocks & Bitcoin</a>
+        <a href="#support-section" class="hover:text-cash-green transition-colors">Support</a>
+      </nav>
+
+      <!-- Right Header Actions / Auth Status -->
+      <div class="flex items-center space-x-3 sm:space-x-4">
+        <div id="authStatusBadge" class="hidden sm:flex items-center space-x-2 text-xs font-mono px-3 py-1.5 rounded-full bg-cash-surface border border-cash-border text-zinc-300">
+          <span class="w-2 h-2 rounded-full bg-cash-green animate-pulse"></span>
+          <span id="sessionTag">$guest</span>
+          <span class="text-zinc-500">|</span>
+          <span id="sessionBalance" class="text-white font-bold">$1,250.00</span>
+        </div>
+
+        <button onclick="openAuthModal()" id="navLoginBtn" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-all">
+          Sign In
+        </button>
+
+        <a href="#payments" class="px-5 py-2.5 rounded-full bg-cash-green text-black font-extrabold text-xs uppercase tracking-wider hover:bg-cash-greenDark hover:shadow-lg hover:shadow-cash-green/25 active:scale-95 transition-all flex items-center gap-1.5">
+          <span>Sign up</span>
+          <span>→</span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-cash-surface transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-cash-dark border-b border-cash-border px-6 py-6 space-y-4 text-sm font-semibold">
+      <a href="#payments" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Transfers</a>
+      <a href="#cash-card" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Cash Card</a>
+      <a href="#tags-showcase" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Tags</a>
+      <a href="#banking" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Banking</a>
+      <a href="#investing" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Stocks & Bitcoin</a>
+      <a href="#taxes" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Taxes & Business</a>
+      <a href="#security" onclick="toggleMobileMenu()" class="block text-zinc-300 hover:text-cash-green">Security</a>
+      <div class="pt-4 border-t border-cash-border flex flex-col gap-2">
+        <button onclick="openAuthModal(); toggleMobileMenu();" class="w-full py-3 rounded-full bg-cash-surface text-white text-center font-bold">
+          Account Login
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ========================================================================= -->
+    <!-- 2. HERO SECTION — PURE BLACK BACKGROUND WITH CRISP WHITE LETTERING        -->
+    <!-- ========================================================================= -->
+    <section id="home" class="relative pt-12 pb-24 lg:pt-20 lg:pb-32 hero-pure-black bg-black border-b border-cash-border/50">
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          
+          <!-- Left Column: Primary Copy with Pure White Subheading -->
+          <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+            
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-cash-surface border border-cash-border text-xs font-semibold text-cash-green">
+              <span class="w-2 h-2 rounded-full bg-cash-green animate-ping"></span>
+              <span>Official Web Client & Transfer Engine</span>
+            </div>
+
+            <h1 class="text-5xl sm:text-7xl xl:text-8xl font-black tracking-tight leading-[0.95] text-white">
+              Do more <br>
+              <span class="text-cash-green">with your</span> <br>
+              money.
+            </h1>
+
+            <!-- Updated: Crisp pure white text instead of gray -->
+            <p class="text-lg sm:text-xl text-white hero-pure-white-text font-normal max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              The financial platform built for the way you live. Send money instantly, customize a free Visa debit card, receive direct deposits up to 2 days early, and invest in stocks and Bitcoin starting with just $1.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <a href="#payments" class="px-8 py-4 rounded-full bg-cash-green text-black font-extrabold text-base hover:bg-cash-greenDark hover:scale-105 active:scale-95 transition-all shadow-lg shadow-cash-green/25 flex items-center space-x-3">
+                <span>Start a Transfer</span>
+                <span class="text-xl font-bold">→</span>
+              </a>
+
+              <button onclick="openCashLinkModal()" class="px-7 py-4 rounded-full bg-cash-surface hover:bg-cash-elevated border border-cash-border text-white font-bold text-base transition-all flex items-center space-x-2.5">
+                <svg class="w-5 h-5 text-cash-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                </svg>
+                <span>Generate $Cashtag QR</span>
+              </button>
+            </div>
+
+            <!-- Platform Highlights Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-cash-border/60 text-left">
+              <div>
+                <div class="text-2xl sm:text-3xl font-black text-white">$0</div>
+                <div class="text-xs text-zinc-300 font-medium mt-1">Standard Bank Transfers</div>
+              </div>
+              <div>
+                <div class="text-2xl sm:text-3xl font-black text-white">2 Days</div>
+                <div class="text-xs text-zinc-300 font-medium mt-1">Faster Direct Deposit</div>
+              </div>
+              <div>
+                <div class="text-2xl sm:text-3xl font-black text-white">$1</div>
+                <div class="text-xs text-zinc-300 font-medium mt-1">Minimum to Invest</div>
+              </div>
+              <div>
+                <div class="text-2xl sm:text-3xl font-black text-white">FDIC</div>
+                <div class="text-xs text-zinc-300 font-medium mt-1">Insured up to $250K*</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Live Web Quick-Pay Gateway -->
+          <div class="lg:col-span-5">
+            <div class="w-full bg-cash-dark border border-cash-border rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+              
+              <!-- Card Header -->
+              <div class="flex items-center justify-between border-b border-cash-border pb-4 mb-6">
+                <div>
+                  <h3 class="text-lg font-black text-white">Web Transfer Hub</h3>
+                  <p class="text-xs text-zinc-400">Instant peer-to-peer web settlement</p>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-cash-green/10 text-cash-green text-[11px] font-bold uppercase tracking-wider">
+                  Live Gateway
+                </span>
+              </div>
+
+              <!-- Real Currency Input Field -->
+              <div class="space-y-4">
+                <div class="relative bg-black rounded-2xl border border-cash-border p-4 text-center focus-within:border-cash-green transition-colors">
+                  <span class="text-xs text-zinc-400 uppercase tracking-wider font-semibold">Enter Amount</span>
+                  <div class="flex items-center justify-center mt-1">
+                    <span class="text-4xl font-extrabold text-cash-green mr-1">$</span>
+                    <input 
+                      type="number" 
+                      id="heroAmountInput" 
+                      value="25.00" 
+                      step="0.01" 
+                      min="1.00" 
+                      max="10000.00"
+                      class="text-4xl sm:text-5xl font-black bg-transparent text-white focus:outline-none w-44 text-center"
+                      oninput="syncTransferAmounts(this.value)"
+                    />
+                  </div>
+                  <div class="flex justify-center gap-2 mt-3">
+                    <button onclick="setHeroPreset(10)" class="px-3 py-1 rounded-full bg-cash-surface hover:bg-cash-elevated text-xs font-semibold text-zinc-300">$10</button>
+                    <button onclick="setHeroPreset(25)" class="px-3 py-1 rounded-full bg-cash-surface hover:bg-cash-elevated text-xs font-semibold text-zinc-300">$25</button>
+                    <button onclick="setHeroPreset(50)" class="px-3 py-1 rounded-full bg-cash-surface hover:bg-cash-elevated text-xs font-semibold text-zinc-300">$50</button>
+                    <button onclick="setHeroPreset(100)" class="px-3 py-1 rounded-full bg-cash-surface hover:bg-cash-elevated text-xs font-semibold text-zinc-300">$100</button>
+                  </div>
+                </div>
+
+                <!-- Recipient Input -->
+                <div class="space-y-1.5">
+                  <label class="text-xs font-semibold text-zinc-300">Recipient Cashtag or Email</label>
+                  <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-cash-green font-mono font-bold">$</span>
+                    <input 
+                      type="text" 
+                      id="heroCashtagInput" 
+                      placeholder="plaedoe" 
+                      value="plaedoe"
+                      class="w-full bg-cash-surface border border-cash-border rounded-xl pl-8 pr-4 py-3 text-sm text-white focus:outline-none focus:border-cash-green font-mono"
+                    />
+                  </div>
+                </div>
+
+                <!-- Note / Emoji memo -->
+                <div class="space-y-1.5">
+                  <label class="text-xs font-semibold text-zinc-300">For / Memo</label>
+                  <input 
+                    type="text" 
+                    id="heroMemoInput" 
+                    placeholder="Coffee ☕, groceries, design services..." 
+                    value="Lunch 🍔"
+                    class="w-full bg-cash-surface border border-cash-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cash-green"
+                  />
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                  onclick="executeHeroTransfer()" 
+                  class="w-full py-4 rounded-xl bg-cash-green text-black font-extrabold text-sm hover:bg-cash-greenDark active:scale-95 transition-all shadow-lg shadow-cash-green/20"
+                >
+                  Confirm & Transfer Now
+                </button>
+
+                <p class="text-[11px] text-zinc-400 text-center leading-normal">
+                  Standard transfers are 100% free. Instant transfers to supported debit cards incur a standard 1.75% network fee.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MONEY / WEB TRANSFERS FULL APPLICATION SUITE                           -->
+    <!-- ========================================================================= -->
+    <section id="payments" class="py-24 bg-cash-dark border-b border-cash-border">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-3xl mb-16">
+          <span class="text-xs font-bold uppercase tracking-widest text-cash-green">Instant Transfers</span>
+          <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white mt-2">
+            Send, request, and settl
